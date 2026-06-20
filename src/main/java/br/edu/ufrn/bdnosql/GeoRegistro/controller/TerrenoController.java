@@ -19,6 +19,7 @@ public class TerrenoController {
 	
 	@PostMapping("/terrenos")
 	public ResponseEntity<?> criar(@RequestBody TerrenoDTO dto) {
+
 		return ResponseEntity.ok(terrenoService.cadastrarTerreno(dto));
 	}
 }

@@ -33,19 +33,20 @@ public class TerrenoService {
 		}
 
 		GeoJsonPolygon poligono = new GeoJsonPolygon(pontos);
-		
-		if(terrenoRepository.buscarIntersecoes(poligono)) {
-			throw new RuntimeException("Terreno já cadastrado...");
-		}
-		else {
-			Terreno terreno = new Terreno();
-			
-			terreno.setUsuarioId(dto.getUserId());
-			terreno.setPoligono(poligono);
-			terreno.setStatusOcupacao(true);
+        List<Terreno> conflitos = terrenoRepository.buscarIntersecoes(poligono);
 
-			return terrenoRepository.save(terreno);
-		}
+        if(conflitos.isEmpty()){
+            Terreno terreno = new Terreno();
+
+            terreno.setUsuarioId(dto.getUserId());
+            terreno.setPoligono(poligono);
+            terreno.setStatusOcupacao(true);
+
+            return terrenoRepository.save(terreno);
+        } else {
+            throw new RuntimeException("Terreno conflituoso com outra área já cadastrada.");
+        }
+
 	}
 
 	public double calcularArea(GeoJsonPolygon poligono) { // to Fix
