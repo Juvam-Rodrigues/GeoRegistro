@@ -4,14 +4,14 @@ import java.util.List;
 
 //Classe responsável para receber os dados que está vindo da aplicação do celular
 public class TerrenoDTO {
-	private String userId;
+	private String usuarioId;
 	private List<CoordenadaDTO> coordenadas;
 	
-	public String getUserId() {
-		return userId;
+	public String getUsuarioId() {
+		return usuarioId;
 	}
 	public void setUserId(String userId) {
-		this.userId = userId;
+		this.usuarioId = usuarioId;
 	}
 	public List<CoordenadaDTO> getCoordenadas() {
 		return coordenadas;

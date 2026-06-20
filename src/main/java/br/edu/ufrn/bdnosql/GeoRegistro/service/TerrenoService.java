@@ -38,7 +38,7 @@ public class TerrenoService {
         if(conflitos.isEmpty()){
             Terreno terreno = new Terreno();
 
-            terreno.setUsuarioId(dto.getUserId());
+            terreno.setUsuarioId(dto.getUsuarioId());
             terreno.setPoligono(poligono);
             terreno.setStatusOcupacao(true);
 
