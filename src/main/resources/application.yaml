@@ -1,3 +1,6 @@
 spring:
-  application:
+  applicantion:
     name: GeoRegistro
+
+  mongodb:
+    uri: mongodb+srv://admin:admin@clusterapirest.zqhqtdu.mongodb.net/georegistro?retryWrites=true&w=majority&appName=clusterAPIRest
