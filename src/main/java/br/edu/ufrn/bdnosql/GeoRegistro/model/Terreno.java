@@ -14,10 +14,18 @@ public class Terreno {
     @Indexed
     private String usuarioId;
     private double areaM2;
-    private boolean statusOcupacao;
+    private boolean statusOcupacao = false;
     @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
-    private GeoJsonPolygon geometria;
+    private GeoJsonPolygon poligono;
 
+    public Terreno() {
+    	
+    }
+    public Terreno(String usuarioId, GeoJsonPolygon poligono) {
+    	this.usuarioId = usuarioId;
+        this.areaM2 = 0;
+        this.poligono = poligono;
+    }
     public String getId() {
         return id;
     }
@@ -50,11 +58,11 @@ public class Terreno {
         this.statusOcupacao = statusOcupacao;
     }
 
-    public GeoJsonPolygon getGeometria() {
-        return geometria;
+    public GeoJsonPolygon getPoligono() {
+        return poligono;
     }
 
-    public void setGeometria(GeoJsonPolygon geometria) {
-        this.geometria = geometria;
+    public void setPoligono(GeoJsonPolygon geometria) {
+        this.poligono = geometria;
     }
 }

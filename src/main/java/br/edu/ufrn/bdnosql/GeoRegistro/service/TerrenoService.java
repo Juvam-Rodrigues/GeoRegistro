@@ -1,40 +1,69 @@
 package br.edu.ufrn.bdnosql.GeoRegistro.service;
 
+import br.edu.ufrn.bdnosql.GeoRegistro.dto.TerrenoDTO;
 import br.edu.ufrn.bdnosql.GeoRegistro.model.Terreno;
 import br.edu.ufrn.bdnosql.GeoRegistro.repository.TerrenoRepository;
-import com.mongodb.client.model.geojson.Point;
 import lombok.AllArgsConstructor;
+
+import org.springframework.data.geo.Point;
+import net.sf.geographiclib.Geodesic;
+import net.sf.geographiclib.PolygonArea;
+import net.sf.geographiclib.PolygonResult;
+
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class TerrenoService {
-    private TerrenoRepository terrenoRepository;
+	private TerrenoRepository terrenoRepository;
 
-    /*public Terreno cadastrarTerreno(Terreno novoTerreno) {
-        implementar
-    }*/
+	public Terreno cadastrarTerreno(TerrenoDTO dto) {
 
-    public double calcularArea(GeoJsonPolygon geometria) { // to Fix
+		List<Point> pontos = dto.getCoordenadas().stream().map(coordenada ->
+		new Point(coordenada.getLongitude(), coordenada.getLatitude())).toList();
 
-        PolygonArea polygon =
-                new PolygonArea(Geodesic.WGS84, false);
+		// GeoJSON exige que o primeiro ponto seja igual ao último
+		if (!pontos.get(0).equals(pontos.get(pontos.size() - 1))) {
+			pontos = new ArrayList<>(pontos);
+			pontos.add(pontos.get(0));
+		}
 
-        List<Point> pontos = geometria.getPoints();
+		GeoJsonPolygon poligono = new GeoJsonPolygon(pontos);
+		
+		if(terrenoRepository.buscarIntersecoes(poligono)) {
+			throw new RuntimeException("Terreno já cadastrado...");
+		}
+		else {
+			Terreno terreno = new Terreno();
+			
+			terreno.setUsuarioId(dto.getUserId());
+			terreno.setPoligono(poligono);
+			terreno.setStatusOcupacao(true);
 
-        for (Point p : pontos) {
+			return terrenoRepository.save(terreno);
+		}
+	}
 
-            double lon = p.getX();
-            double lat = p.getY();
+	public double calcularArea(GeoJsonPolygon poligono) { // to Fix
 
-            polygon.AddPoint(lat, lon);
-        }
+		PolygonArea polygon = new PolygonArea(Geodesic.WGS84, false);
 
-        PolygonResult result = polygon.Compute();
+		List<Point> pontos = poligono.getPoints();
 
-        return Math.abs(result.area);
-    }
+		for (Point p : pontos) {
+
+			double lon = p.getX();
+			double lat = p.getY();
+
+			polygon.AddPoint(lat, lon);
+		}
+
+		PolygonResult result = polygon.Compute();
+
+		return Math.abs(result.area);
+	}
 }
