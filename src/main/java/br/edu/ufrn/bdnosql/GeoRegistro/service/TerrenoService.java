@@ -41,6 +41,7 @@ public class TerrenoService {
             terreno.setUsuarioId(dto.getUsuarioId());
             terreno.setPoligono(poligono);
             terreno.setStatusOcupacao(true);
+            terreno.setAreaM2(calcularArea(dto));
 
             return terrenoRepository.save(terreno);
         } else {
@@ -49,22 +50,19 @@ public class TerrenoService {
 
 	}
 
-	public double calcularArea(GeoJsonPolygon poligono) { // to Fix
+    public double calcularArea(TerrenoDTO dto) {
+        PolygonArea polygon = new PolygonArea(Geodesic.WGS84, false);
 
-		PolygonArea polygon = new PolygonArea(Geodesic.WGS84, false);
+        List<Point> pontos = dto.getCoordenadas().stream()
+                .map(c -> new Point(c.getLongitude(), c.getLatitude()))
+                .toList();
 
-		List<Point> pontos = poligono.getPoints();
+        for (Point p : pontos) {
+            polygon.AddPoint(p.getY(), p.getX()); // lat, lon
+        }
 
-		for (Point p : pontos) {
+        PolygonResult result = polygon.Compute();
 
-			double lon = p.getX();
-			double lat = p.getY();
-
-			polygon.AddPoint(lat, lon);
-		}
-
-		PolygonResult result = polygon.Compute();
-
-		return Math.abs(result.area);
-	}
+        return Math.abs(result.area);
+    }
 }
