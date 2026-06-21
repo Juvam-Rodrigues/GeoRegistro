@@ -1,8 +1,11 @@
 package br.edu.ufrn.bdnosql.GeoRegistro.service;
 
-import br.edu.ufrn.bdnosql.GeoRegistro.dto.TerrenoDTO;
+import br.edu.ufrn.bdnosql.GeoRegistro.dto.TerrenoCadastrarDTO;
 import br.edu.ufrn.bdnosql.GeoRegistro.model.Terreno;
+
 import br.edu.ufrn.bdnosql.GeoRegistro.repository.TerrenoRepository;
+import br.edu.ufrn.bdnosql.GeoRegistro.repository.UsuarioRepository;
+
 import lombok.AllArgsConstructor;
 
 import org.springframework.data.geo.Point;
@@ -20,9 +23,18 @@ import java.util.List;
 @AllArgsConstructor
 public class TerrenoService {
 	private TerrenoRepository terrenoRepository;
+	private UsuarioRepository usuarioRepository;
 
-	public Terreno cadastrarTerreno(TerrenoDTO terrenoDTO) {
 
+	public Terreno cadastrarTerreno(TerrenoCadastrarDTO terrenoDTO) {
+
+		// Verifica se o usuário informado existe e tem ID
+		usuarioRepository
+        .findById(terrenoDTO.getUsuarioId())
+        .orElseThrow(() ->
+            new RuntimeException("Usuário não encontrado"));
+		
+		
 		List<Point> pontos = terrenoDTO.getCoordenadas().stream().map(coordenada ->
 		new Point(coordenada.getLongitude(), coordenada.getLatitude())).toList();
 
@@ -50,7 +62,7 @@ public class TerrenoService {
 
 	}
 
-    public double calcularArea(TerrenoDTO dto) {
+    public double calcularArea(TerrenoCadastrarDTO dto) {
         PolygonArea polygon = new PolygonArea(Geodesic.WGS84, false);
 
         List<Point> pontos = dto.getCoordenadas().stream()

@@ -3,7 +3,7 @@ package br.edu.ufrn.bdnosql.GeoRegistro.dto;
 import java.util.List;
 
 //Classe responsável para receber os dados que está vindo da aplicação do celular
-public class TerrenoDTO {
+public class TerrenoCadastrarDTO {
 	private String usuarioId;
 	private List<CoordenadaDTO> coordenadas;
 	
