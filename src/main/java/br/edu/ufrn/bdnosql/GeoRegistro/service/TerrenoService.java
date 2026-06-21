@@ -21,9 +21,9 @@ import java.util.List;
 public class TerrenoService {
 	private TerrenoRepository terrenoRepository;
 
-	public Terreno cadastrarTerreno(TerrenoDTO dto) {
+	public Terreno cadastrarTerreno(TerrenoDTO terrenoDTO) {
 
-		List<Point> pontos = dto.getCoordenadas().stream().map(coordenada ->
+		List<Point> pontos = terrenoDTO.getCoordenadas().stream().map(coordenada ->
 		new Point(coordenada.getLongitude(), coordenada.getLatitude())).toList();
 
 		// GeoJSON exige que o primeiro ponto seja igual ao último
@@ -38,10 +38,10 @@ public class TerrenoService {
         if(conflitos.isEmpty()){
             Terreno terreno = new Terreno();
 
-            terreno.setUsuarioId(dto.getUsuarioId());
+            terreno.setUsuarioId(terrenoDTO.getUsuarioId());
             terreno.setPoligono(poligono);
             terreno.setStatusOcupacao(true);
-            terreno.setAreaM2(calcularArea(dto));
+            terreno.setAreaM2(calcularArea(terrenoDTO));
 
             return terrenoRepository.save(terreno);
         } else {
@@ -64,5 +64,15 @@ public class TerrenoService {
         PolygonResult result = polygon.Compute();
 
         return Math.abs(result.area);
+    }
+    
+    public List<Terreno> listarTodos(){
+    	List<Terreno> terrenos = terrenoRepository.findAll();
+    	if(!terrenos.isEmpty()) {
+    		return terrenos;
+    	}
+    	else {
+            throw new RuntimeException("Não há terrenos cadastrados.");
+    	}
     }
 }

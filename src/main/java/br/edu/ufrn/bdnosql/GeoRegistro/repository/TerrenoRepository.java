@@ -1,6 +1,5 @@
 package br.edu.ufrn.bdnosql.GeoRegistro.repository;
 
-import br.edu.ufrn.bdnosql.GeoRegistro.dto.TerrenoDTO;
 import br.edu.ufrn.bdnosql.GeoRegistro.model.Terreno;
 
 import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
@@ -12,6 +11,8 @@ import java.util.Optional;
 
 public interface TerrenoRepository extends MongoRepository<Terreno, String> {
     Optional<Terreno> findByUsuarioId(String usuarioId);
+    
+    //Aqui é para rodar a query para ver se tem terrenos com interseção
     @Query("{ poligono: { $geoIntersects: { $geometry: ?0 } } }")
     List<Terreno> buscarIntersecoes(GeoJsonPolygon geometria);
 }

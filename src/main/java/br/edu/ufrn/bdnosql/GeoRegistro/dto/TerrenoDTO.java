@@ -10,7 +10,7 @@ public class TerrenoDTO {
 	public String getUsuarioId() {
 		return usuarioId;
 	}
-	public void setUserId(String userId) {
+	public void setUserId(String usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 	public List<CoordenadaDTO> getCoordenadas() {
