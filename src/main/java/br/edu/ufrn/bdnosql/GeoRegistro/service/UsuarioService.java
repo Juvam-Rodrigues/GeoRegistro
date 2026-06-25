@@ -4,7 +4,7 @@ import br.edu.ufrn.bdnosql.GeoRegistro.dto.UsuarioCadastrarDTO;
 import br.edu.ufrn.bdnosql.GeoRegistro.dto.UsuarioLoginDTO;
 import br.edu.ufrn.bdnosql.GeoRegistro.model.Usuario;
 import br.edu.ufrn.bdnosql.GeoRegistro.repository.UsuarioRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	//Classe usada para criptografar as senhas
-	private BCryptPasswordEncoder encoder;
+	private PasswordEncoder encoder;
 
 	public Usuario cadastrarUsuario(UsuarioCadastrarDTO usuarioDTO) {
 		if (usuarioRepository.existsByEmail(usuarioDTO.getEmail())) {
