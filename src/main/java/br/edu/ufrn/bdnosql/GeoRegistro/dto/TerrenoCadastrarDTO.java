@@ -6,11 +6,10 @@ import java.util.List;
 public class TerrenoCadastrarDTO {
 	private String usuarioId;
 	private List<CoordenadaDTO> coordenadas;
-	
 	public String getUsuarioId() {
 		return usuarioId;
 	}
-	public void setUserId(String usuarioId) {
+	public void setUsuarioId(String usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 	public List<CoordenadaDTO> getCoordenadas() {
@@ -19,4 +18,6 @@ public class TerrenoCadastrarDTO {
 	public void setCoordenadas(List<CoordenadaDTO> coordenadas) {
 		this.coordenadas = coordenadas;
 	}
+	
+	
 }
