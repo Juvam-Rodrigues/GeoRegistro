@@ -17,4 +17,4 @@ RUN ./mvnw clean package -DskipTests || mvn clean package -DskipTests
 EXPOSE 8080
 
 # Rodar o jar gerado
-CMD ["java", "-jar", "target/GeoRegistro-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "java -jar target/*.jar"]
