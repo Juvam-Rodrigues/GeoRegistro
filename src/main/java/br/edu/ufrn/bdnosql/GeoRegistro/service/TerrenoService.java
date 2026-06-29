@@ -1,6 +1,9 @@
 package br.edu.ufrn.bdnosql.GeoRegistro.service;
 
 import br.edu.ufrn.bdnosql.GeoRegistro.dto.TerrenoCadastrarDTO;
+import br.edu.ufrn.bdnosql.GeoRegistro.exception.custom.TerrenoConflitanteException;
+import br.edu.ufrn.bdnosql.GeoRegistro.exception.custom.TerrenoNaoEncontradoException;
+import br.edu.ufrn.bdnosql.GeoRegistro.exception.custom.UserNaoEncontradoException;
 import br.edu.ufrn.bdnosql.GeoRegistro.model.Terreno;
 
 import br.edu.ufrn.bdnosql.GeoRegistro.repository.TerrenoRepository;
@@ -22,9 +25,15 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TerrenoService {
-	private TerrenoRepository terrenoRepository;
-	private UsuarioRepository usuarioRepository;
+	private final TerrenoRepository terrenoRepository;
+	private final UsuarioRepository usuarioRepository;
+	
 
+	public TerrenoService(TerrenoRepository terrenoRepository, UsuarioRepository usuarioRepository) {
+		super();
+		this.terrenoRepository = terrenoRepository;
+		this.usuarioRepository = usuarioRepository;
+	}
 
 	public Terreno cadastrarTerreno(TerrenoCadastrarDTO terrenoDTO) {
 
@@ -32,7 +41,7 @@ public class TerrenoService {
 		usuarioRepository
         .findById(terrenoDTO.getUsuarioId())
         .orElseThrow(() ->
-            new RuntimeException("Usuário não encontrado"));
+            new UserNaoEncontradoException());
 		
 		
 		List<Point> pontos = terrenoDTO.getCoordenadas().stream().map(coordenada ->
@@ -57,7 +66,7 @@ public class TerrenoService {
 
             return terrenoRepository.save(terreno);
         } else {
-            throw new RuntimeException("Terreno conflituoso com outra área já cadastrada.");
+            throw new TerrenoConflitanteException();
         }
 
 	}
@@ -84,7 +93,7 @@ public class TerrenoService {
     		return terrenos;
     	}
     	else {
-            throw new RuntimeException("Não há terrenos cadastrados.");
+            throw new TerrenoNaoEncontradoException();
     	}
     }
 }

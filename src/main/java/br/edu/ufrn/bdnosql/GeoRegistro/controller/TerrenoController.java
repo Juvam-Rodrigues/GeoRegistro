@@ -17,7 +17,11 @@ import br.edu.ufrn.bdnosql.GeoRegistro.service.TerrenoService;
 @RestController
 @AllArgsConstructor
 public class TerrenoController {
-	private TerrenoService terrenoService;
+	private final TerrenoService terrenoService;
+	
+	public TerrenoController(TerrenoService terrenoService) {
+		this.terrenoService = terrenoService;
+	}
 	
 	@PostMapping("/cadastrarterrenos")
 	public ResponseEntity<?> criar(@RequestBody TerrenoCadastrarDTO dto) {

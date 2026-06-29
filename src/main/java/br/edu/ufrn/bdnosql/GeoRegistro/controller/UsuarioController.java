@@ -16,7 +16,12 @@ import br.edu.ufrn.bdnosql.GeoRegistro.service.UsuarioService;
 @RestController
 @AllArgsConstructor
 public class UsuarioController {
-	UsuarioService usuarioservice;
+	private final UsuarioService usuarioservice;
+	
+	public UsuarioController(UsuarioService usuarioservice) {
+		this.usuarioservice = usuarioservice;
+	}
+	
 	@PostMapping("/cadastrarusuario")
 	public ResponseEntity<?> criar(@RequestBody UsuarioCadastrarDTO dto) {
 
