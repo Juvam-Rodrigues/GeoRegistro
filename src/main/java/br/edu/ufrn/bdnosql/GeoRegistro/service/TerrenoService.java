@@ -27,13 +27,6 @@ import java.util.List;
 public class TerrenoService {
 	private final TerrenoRepository terrenoRepository;
 	private final UsuarioRepository usuarioRepository;
-	
-
-	public TerrenoService(TerrenoRepository terrenoRepository, UsuarioRepository usuarioRepository) {
-		super();
-		this.terrenoRepository = terrenoRepository;
-		this.usuarioRepository = usuarioRepository;
-	}
 
 	public Terreno cadastrarTerreno(TerrenoCadastrarDTO terrenoDTO) {
 

@@ -21,12 +21,6 @@ public class UsuarioService {
 	//Classe usada para criptografar as senhas
 	private PasswordEncoder encoder;
 
-	public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder encoder) {
-		super();
-		this.usuarioRepository = usuarioRepository;
-		this.encoder = encoder;
-	}
-
 	public Usuario cadastrarUsuario(UsuarioCadastrarDTO usuarioDTO) {
 		if (usuarioRepository.existsByEmail(usuarioDTO.getEmail())) {
 			throw new EmailCadastradoException();
